@@ -21,17 +21,17 @@ esac
 function __prompt_git()
 {
     local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    if [[ ${#branch} -ne 0 ]]; then
+    if [ ${#branch} -ne 0 ]; then
         local s_work='\033[31m●'
         local s_cache='\033[31m●'
-        if [[ ! $(git ls-files --others --exclude-standard --directory --no-empty-directory --error-unmatch -- ':/*' &>/dev/null) && \
-           $(git diff --no-ext-diff --quiet &>/dev/null) ]]; then
+        if ! git ls-files --others --exclude-standard --directory --no-empty-directory --error-unmatch -- ':/*' &> /dev/null && \
+          git diff --no-ext-diff --quiet &> /dev/null; then
             s_work='\033[32m●'
         fi
-        if [[ $(git diff --no-ext-diff --cached --quiet &>/dev/null) ]]; then
+        if git diff --no-ext-diff --cached --quiet &> /dev/null; then
             s_cache='\033[32m●'
         fi
-        if [[ "${color_prompt}" == 'yes' ]]; then
+        if [ "${color_prompt}" == 'yes' ]; then
             echo -e "\033[1;37m<\033[34m${branch}${s_work}${s_cache}\033[37m>\033[0m"
         else
             echo -e "<${branch}>"
@@ -40,7 +40,7 @@ function __prompt_git()
 }
 
 # PS1
-if [[ "${color_prompt}" = 'yes' ]]; then
+if [ "${color_prompt}" == 'yes' ]; then
     PROMPT_PREFIX="${bold}${cyan}☁ ${light_grey}[${green}\u${yellow}@${magenta}\h${reset_all}:${under_lined}\w${reset_all}${bold}${light_grey}]${reset_all} "
     PROMPT_NEWLINE="${reset_all}\n${reset_all}"
     PROMPT_SUFFIX="${bold}${cyan}➜ ${reset_all}"
@@ -84,7 +84,7 @@ alias clean-trash=__clean_trash
 function __clean_trash()
 {
     read -p "clean .Trash? (y or n) " confirm
-    [[ $confirm == 'y' || $confirm == 'Y' ]] && /bin/rm -rf ~/.Trash/*
+    [ "$confirm" == 'y' ] || [ "$confirm" == 'Y' ] && /bin/rm -rf ~/.Trash/*
 }
 
 # tmux
@@ -92,11 +92,11 @@ alias tmux=__tmux
 function __tmux()
 {
     tmux_cmd='command tmux' # command cancels all alias.
-    if [[ $# -gt 0 ]]; then
+    if [ $# -gt 0 ]; then
         $tmux_cmd $@
     else
         $tmux_cmd attach
-        if [[ $? -ne 0 ]]; then
+        if [ $? -ne 0 ]; then
             $tmux_cmd new-session
         fi
     fi
@@ -104,13 +104,13 @@ function __tmux()
 
 # bash completion
 # https://github.com/scop/bash-completion
-[[ -f "~/.local/bash-completion/bash_completion" ]] && \
-    . "~/.lcoal/bash-completion/bash_completion"
+[ -f ~/.local/bash-completion/bash_completion ] && \
+    . ~/.local/bash-completion/bash_completion
 
 # git completion
 # https://github.com/git/git/tree/master/contrib/completion
-[[ -f "~/.local/git-completion/git-completion.bash" ]] && \
-    . "~/.lcoal/git-completion/git-completion.bash"
+[ -f ~/.local/git-completion/git-completion.bash ] && \
+    . ~/.local/git-completion/git-completion.bash
 
 # alias
 alias sh='/bin/bash'
@@ -127,17 +127,17 @@ alias man='tldr'
 
 
 # static link library
-if [[ -z $ORIGIN_LIBRARY_PATH ]]; then
+if [ -z "$ORIGIN_LIBRARY_PATH" ]; then
     export ORIGIN_LIBRARY_PATH="$LIBRARY_PATH"
 fi
 export LIBRARY_PATH="$ORIGIN_LIBRARY_PATH"
 # dynamic link library
-if [[ -z $ORIGIN_LD_LIBRARY_PATH ]]; then
+if [ -z "$ORIGIN_LD_LIBRARY_PATH" ]; then
     export ORIGIN_LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
 fi
 export LD_LIBRARY_PATH="$ORIGIN_LD_LIBRARY_PATH"
 # env path
-if [[ -z $ORIGIN_PATH ]]; then
+if [ -z "$ORIGIN_PATH" ]; then
     export ORIGIN_PATH="~/.bin/:$PATH"
 fi
 export PATH="$ORIGIN_PATH"
