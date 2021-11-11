@@ -1,8 +1,8 @@
 # Installation Steps
 
-1. Install **wget, curl, tldr, git, gcc, gdb, vim, tmux, zip, unzip**
+1. Install **wget, curl, tldr, git, gcc, g++, gdb, vim, tmux, zip, unzip**
 
-    `sudo apt install wget curl tldr git gcc gdb vim tmux zip unzip`
+    `sudo apt install wget curl tldr git gcc g++ gdb vim tmux zip unzip`
 
 2. Execute **install.sh**
 
