@@ -3,13 +3,13 @@
 1. Install **wget, curl, tldr, git, gcc, gdb, vim, tmux, zip, unzip**
 
     `sudo apt install wget curl tldr git gcc gdb vim tmux zip unzip`
-    
+
 2. Execute **install.sh**
 
     `bash install.sh`
 
 3. Install **nvm** and **node.js**
-    
+
     * open [nvm website](https://github.com/nvm-sh/nvm), follow the manual to install
 
     * configure default nvm version, eg (*to default to the latest LTS version*): `echo "lts/*" > .nvmrc`
@@ -32,7 +32,7 @@
 
     * update **[plug.vim](https://github.com/junegunn/vim-plug)**: `:PlugUpgrade`
 
-    * install **[coc.nvim](https://github.com/neoclide/coc.nvim) extensions**: `CocInstall coc-sh coc-json coc-markdownlint coc-pyright coc-sql coc-metals` for language **shell, json, markdown, python, sql, scala**
+    * install **[coc.nvim](https://github.com/neoclide/coc.nvim) extensions**: `CocInstall coc-sh coc-json coc-markdownlint coc-pyright coc-metals coc-clangd coc-java` for language **shell, json, markdown, python, scala, c/c++, java**
 
     * update **coc.nvim update extensions**: `:CocUpdate`
 
