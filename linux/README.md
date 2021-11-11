@@ -34,7 +34,7 @@
 
     * install **[coc.nvim](https://github.com/neoclide/coc.nvim) extensions**: `CocInstall coc-sh coc-json coc-markdownlint coc-pyright coc-metals coc-clangd coc-java` for language **shell, json, markdown, python, scala, c/c++, java**
 
-    * install **clangd.install**: `:CocCommand clangd.install`
+    * install **clangd.install**: `:CocCommand clangd.install`, then add **clangd** into **$PATH**
 
     * update **coc.nvim update extensions**: `:CocUpdate`
 
