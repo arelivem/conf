@@ -62,7 +62,7 @@ shopt -s histverify
 shopt -s interactive_comments
 
 # history
-export HISTFILE=~/.bash_history
+export HISTFILE=$HOME/.bash_history
 export HISTSIZE=10000
 export HISTFILESIZE=30000
 # export HISTTIMEFORMAT="%F "
@@ -77,14 +77,14 @@ alias rm='trash -F'  # mac
 alias rm=__rm
 function __rm()
 {
-    mv --backup=t $@ ~/.Trash/
+    mv --backup=t $@ $HOME/.Trash/
 }
 
 alias clean-trash=__clean_trash
 function __clean_trash()
 {
     read -p "clean .Trash? (y or n) " confirm
-    [ "$confirm" == 'y' ] || [ "$confirm" == 'Y' ] && /bin/rm -rf ~/.Trash/*
+    [ "$confirm" == 'y' ] || [ "$confirm" == 'Y' ] && /bin/rm -rf $HOME/.Trash/*
 }
 
 # tmux
@@ -104,13 +104,13 @@ function __tmux()
 
 # bash completion
 # https://github.com/scop/bash-completion
-[ -f ~/.local/bash-completion/bash_completion ] && \
-    . ~/.local/bash-completion/bash_completion
+[ -f $HOME/.local/bash-completion/bash_completion ] && \
+    . $HOME/.local/bash-completion/bash_completion
 
 # git completion
 # https://github.com/git/git/tree/master/contrib/completion
-[ -f ~/.local/git-completion/git-completion.bash ] && \
-    . ~/.local/git-completion/git-completion.bash
+[ -f $HOME/.local/git-completion/git-completion.bash ] && \
+    . $HOME/.local/git-completion/git-completion.bash
 
 # alias
 alias sh='/bin/bash'
@@ -138,6 +138,23 @@ fi
 export LD_LIBRARY_PATH="$ORIGIN_LD_LIBRARY_PATH"
 # env path
 if [ -z "$ORIGIN_PATH" ]; then
-    export ORIGIN_PATH="~/.bin/:$PATH"
+    export ORIGIN_PATH="$HOME/.bin/:$PATH"
 fi
 export PATH="$ORIGIN_PATH"
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$($HOME/.local/anaconda/bin/conda 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f $HOME/.local/anaconda/etc/profile.d/conda.sh ]; then
+        . $HOME/.local/anaconda/etc/profile.d/conda.sh
+    else
+        export PATH="$HOME/.local/anaconda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
