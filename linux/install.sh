@@ -12,6 +12,12 @@ if [ -z $(which tldr) ]; then
     exit 1
 fi
 
+# confirm tmux installed
+if [ -z $(which tmux) ]; then
+    echo "tmux is not installed, please try again after installation."
+    exit 1
+fi
+
 # config inputrc (hot keys)
 /bin/rm -rf ~/.inputrc && cp ./.inputrc ~/
 
@@ -25,7 +31,7 @@ mkdir ~/.local/git-completion && cd ~/.local/git-completion && wget https://raw.
 
 # config vim
 /bin/rm -rf ~/.vim
-mkdir -p ~/.vim/undo ~/.vim/autoload
+mkdir -p ~/.vim/undo ~/.vim/autoload ~/.config/vim
 cd ~/.vim/autoload && wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && cd -
 /bin/rm -rf ~/.vimrc && cp ./.vimrc ~/
 
@@ -40,12 +46,6 @@ git config --global credential.useHttpPath true  # config match git path
 
 echo "============================================================="
 echo "Install finished."
-echo ""
-echo "Vim Plug: open vim, and execute this command"
-echo "    * PlugInstall"
-echo "    * PlugUpdate"
-echo ""
-echo "Tmux: confirm tmux is installed"
 echo ""
 echo "Log out and log in again for the settings to take effect."
 echo "============================================================="
