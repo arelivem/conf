@@ -80,6 +80,11 @@ set cmdheight=2
 set encoding=utf-8
 "set textwidth=80
 "set colorcolumn=80
+"show highlight, use: hi
+set cursorline
+hi CursorLine term=underline cterm=underline ctermbg=NONE ctermfg=NONE gui=underline guibg=NONE guifg=NONE
+"set cursorcolumn
+"hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=whit
 set scrolloff=5
 set sidescroll=20
 set sidescrolloff=5
@@ -99,7 +104,13 @@ call plug#begin('~/.vim/plugged')
 " alignment plug
 Plug 'godlygeek/tabular', {'for': ['c', 'cpp', 'cs', 'css', 'go', 'javascript', 'html/xhtml', 'make', 'lua', 'php', 'plsql', 'perl', 'objc', 'proto', 'r', 'ruby', 'scala', 'sql', 'tex', 'yaml', 'java', 'python', 'sh', 'vim', 'markdown']}
 
-" scala highlight
-Plug 'derekwyatt/vim-scala', {'for': 'scala'}
+" lsp (language server protocol)
+" coc.nvim: https://github.com/neoclide/coc.nvim
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
+
+
+" coc.nvim conf
+" let g:coc_node_path = '~/.local/node-16.13.0/bin/node'
+let g:coc_config_home = '~/.config/vim'
