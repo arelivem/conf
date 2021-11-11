@@ -138,7 +138,7 @@ fi
 export LD_LIBRARY_PATH="$ORIGIN_LD_LIBRARY_PATH"
 # env path
 if [ -z "$ORIGIN_PATH" ]; then
-    export ORIGIN_PATH="$HOME/.bin/:$PATH"
+    export ORIGIN_PATH="$HOME/.bin:$PATH"
 fi
 export PATH="$ORIGIN_PATH"
 
