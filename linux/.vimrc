@@ -1,19 +1,46 @@
 set nocompatible
+set noerrorbells
 
 set nopaste
 set pastetoggle=<F10>
 
+map e <Nop>
 let mapleader="e"
-noremap <Leader>e <ESC>
-cnoremap <Leader>e <ESC>
-inoremap jk <ESC>
-inoremap <Leader>; <ESC>:
-noremap <Leader>v <C-V>
-noremap <Leader>r <C-R>
-noremap fw :wq<CR>
-inoremap fw <ESC>:wq<CR>
-noremap fq :q<CR>
-inoremap fq <ESC>:q<CR>
+" esc
+noremap <Leader>e <Esc>
+cnoremap <Leader>e <Esc>
+inoremap jk <Esc>
+" Ctrl-V
+map <C-i> <Nop>
+noremap <C-i> <C-v>
+inoremap <C-i> <C-v>
+" file edit
+noremap fw :wq<Enter>
+inoremap fw <Esc>:wq<Enter>
+noremap fq :q<Enter>
+inoremap fq <Esc>:q<Enter>
+" edit
+noremap <Leader>r <C-r>
+noremap U :redo<Enter>
+" window
+nnoremap sv :vsplit 
+nnoremap sh :split 
+nnoremap sf :sfind 
+nnoremap wn <C-w>w
+nnoremap wp <C-w>W
+nnoremap wj <C-w>j
+nnoremap wk <C-w>k
+nnoremap wh <C-w>h
+nnoremap wl <C-w>l
+nnoremap wmn <C-w>r
+nnoremap wmp <C-w>R
+" tabpage
+nnoremap st :tabnew 
+nnoremap tq :tabclose<Enter>
+nnoremap tn :+tabnext<Enter>
+nnoremap tp :-tabnext<Enter>
+nnoremap tmn :+tabmove<Enter>
+nnoremap tmp :-tabmove<Enter>
 
 set laststatus=2
 if &term=~"xterm"
@@ -63,14 +90,12 @@ set autoindent
 set smartindent
 set number
 set ruler
-set noeb
 "set ignorecase
 set hlsearch
 set incsearch
 set showmatch
 set nowrap
 set nowrapscan
-"set fillchars=vert:\ ,stl:\ ,stlnc:\
 set mouse=a
 set selection=exclusive
 set selectmode=mouse,key
@@ -80,7 +105,7 @@ set cmdheight=2
 set encoding=utf-8
 "set textwidth=80
 "set colorcolumn=80
-"show highlight, use: hi
+" show highlight, use: hi
 set cursorline
 hi CursorLine term=underline cterm=underline ctermbg=NONE ctermfg=NONE gui=underline guibg=NONE guifg=NONE
 "set cursorcolumn
@@ -88,13 +113,18 @@ hi CursorLine term=underline cterm=underline ctermbg=NONE ctermfg=NONE gui=under
 set scrolloff=5
 set sidescroll=20
 set sidescrolloff=5
+set scrollfocus
 set undofile
 set undodir=~/.vim/undo/
 set wildmenu
-"set wildmode=longest:list,full
-"set completeopt=preview,menu  "code completion
+set wildmode=list:longest
+set completeopt=menuone,preview  "code completion
 set magic
 "set list  "show tab and enter
+set prompt
+set pumheight=15
+set splitbelow
+set splitright
 
 
 " vim plugged
@@ -112,5 +142,6 @@ call plug#end()
 
 
 " coc.nvim conf
-" let g:coc_node_path = '~/.local/node-16.13.0/bin/node'
+"let g:coc_node_path = '~/.local/node-16.13.0/bin/node'
 let g:coc_config_home = '~/.config/vim'
+
