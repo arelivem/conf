@@ -144,6 +144,13 @@ fi
 export PATH="$ORIGIN_PATH"
 
 
+# >>> nvm initialize >>>
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# <<< nvm initialize <<<
+
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$($HOME/.local/anaconda/bin/conda 'shell.bash' 'hook' 2> /dev/null)"
