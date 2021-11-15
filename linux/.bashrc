@@ -14,8 +14,9 @@ default='\[\033[39m\]'
 
 # confirm color prompt
 case "$TERM" in
-    xterm*|*-256color|rxvt*) color_prompt=yes;;
+    xterm*|konsole*|rxvt*) color_prompt="yes";;
 esac
+color_prompt="yes"
 
 # git prompt
 function __prompt_git()
@@ -41,9 +42,9 @@ function __prompt_git()
 
 # PS1
 if [ "${color_prompt}" == 'yes' ]; then
-    PROMPT_PREFIX="${bold}${cyan}☁ ${light_grey}[${green}\u${yellow}@${magenta}\h${reset_all}:${under_lined}\w${reset_all}${bold}${light_grey}]${reset_all} "
+    PROMPT_PREFIX="${bold}${cyan}☘ ${light_grey}[${green}\u${yellow}@${magenta}\h${reset_all}:${under_lined}\w${reset_all}${bold}${light_grey}]${reset_all} "
     PROMPT_NEWLINE="${reset_all}\n${reset_all}"
-    PROMPT_SUFFIX="${bold}${cyan}➜ ${reset_all}"
+    PROMPT_SUFFIX="${bold}${cyan}♪ ${reset_all}"
     PS1="${PROMPT_PREFIX}"'$(__prompt_git)'"${PROMPT_NEWLINE}""${PROMPT_SUFFIX}"
 else
     PS1='☁ [\u@\h:\w]$(__prompt_git)\[\e[m\]\n➜ \[\e[m\]'
