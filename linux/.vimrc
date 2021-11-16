@@ -11,9 +11,17 @@ noremap <Leader>e <Esc>
 cnoremap <Leader>e <Esc>
 inoremap jk <Esc>
 " Ctrl-V
+map <C-p> <Nop>
+noremap <C-p> <C-v>
+noremap <Leader>v <C-v>
+inoremap <C-p> <C-v>
+" complete
 map <C-i> <Nop>
-noremap <C-i> <C-v>
-inoremap <C-i> <C-v>
+map <C-j> <Nop>
+map <C-k> <Nop>
+inoremap <C-i> <C-y>
+inoremap <C-j> <C-n>
+inoremap <C-k> <C-p>
 " file edit
 noremap fw :wq<Enter>
 inoremap fw <Esc>:wq<Enter>
@@ -113,7 +121,7 @@ hi CursorLine term=underline cterm=underline ctermbg=NONE ctermfg=NONE gui=under
 set scrolloff=5
 set sidescroll=20
 set sidescrolloff=5
-set scrollfocus
+"set scrollfocus
 set undofile
 set undodir=~/.vim/undo/
 set wildmenu
