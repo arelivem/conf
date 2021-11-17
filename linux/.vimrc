@@ -8,17 +8,13 @@ map e <Nop>
 let mapleader="e"
 " esc
 noremap <Leader>e <Esc>
-cnoremap <Leader>e <Esc>
 inoremap jk <Esc>
 " Ctrl-V
-map <C-p> <Nop>
 noremap <C-p> <C-v>
-noremap <Leader>v <C-v>
+cnoremap <C-p> <C-v>
 inoremap <C-p> <C-v>
+noremap <Leader>v <C-v>
 " complete
-map <C-i> <Nop>
-map <C-j> <Nop>
-map <C-k> <Nop>
 inoremap <C-i> <C-y>
 inoremap <C-j> <C-n>
 inoremap <C-k> <C-p>
