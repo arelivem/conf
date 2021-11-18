@@ -68,7 +68,7 @@
 
         * uninstall plug-in: `conda remove nb_conda` or `conda uninstall nb_conda`
 
-        * create environment: `conda create -n py-2.7 python=2.7.15 ipykernel` or `conda create -n py-3.6 python=3.6.5 ipykernel`
+        * create environment: `conda create -n py-2.7 python=2.7.15` or `conda create -n py-3.6 python=3.6.5`. If you want to use it in the notebook, you need to install **ipykernel** `pip install ipykernel`
 
         * remove environment: `conda remove -n py-2.7 --all`
 
