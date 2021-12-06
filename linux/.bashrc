@@ -73,12 +73,12 @@ export PROMPT_COMMAND='history -a'
 set -o history
 
 # rename rm
-alias rm='trash -F'  # mac
+# alias rm='trash -F'  # mac
 
 alias rm=__rm
 function __rm()
 {
-    mv --backup=t $@ $HOME/.Trash/
+    /bin/mv --backup=t $@ $HOME/.Trash/
 }
 
 alias clean-trash=__clean_trash
@@ -115,6 +115,8 @@ function __tmux()
 
 # alias
 alias sh='/bin/bash'
+alias mv='/bin/mv -i'
+alias cp='/bin/cp -i'
 alias ls='ls -F --color=auto'  # linux
 # alias ls='ls -FG'  # mac
 alias grep='grep --color=auto'
