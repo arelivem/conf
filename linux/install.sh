@@ -1,51 +1,60 @@
 #!/bin/bash
 
+
 # confirm wget installed
-if [ -z $(which wget) ]; then
-    echo "wget is not installed, please try again after installation."
+if ! which wget &> /dev/null; then
+    echo "wget is not installed, please try again after installed."
     exit 1
 fi
 
-# confirm tldr installed
-if [ -z $(which tldr) ]; then
-    echo "tldr is not installed, please try again after installation."
-    exit 1
-fi
-
-# confirm tmux installed
-if [ -z $(which tmux) ]; then
-    echo "tmux is not installed, please try again after installation."
-    exit 1
-fi
-
-# config inputrc (hot keys)
-/bin/rm -rf ~/.inputrc && cp ./.inputrc ~/
 
 # config bashrc
-/bin/rm -rf ~/.bash_history && touch ~/.bash_history
-/bin/rm -rf ~/.Trash/ ~/.bin/ ~/.local
-mkdir ~/.Trash/ ~/.bin/ ~/.local
-cd ~/.local/ && git clone https://github.com/scop/bash-completion.git && cd -
-mkdir ~/.local/git-completion && cd ~/.local/git-completion && wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && cd -
-/bin/rm -rf ~/.bashrc && cp ./.bashrc ~/
+OS=$(uname -s)
+GIT_STORE='store'
+if [ "${OS}" == 'Linux' ]; then
+    [ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc.back
+    cp -f ./.bashrc ~/.bashrc
+elif [ "${OS}" == 'Darwin' ]; then
+    [ -f ~/.bash_profile ] && mv ~/.bash_profile ~/.bash_profile.back
+    cp -f ./.bashrc ~/.bash_profile
+    GIT_STORE='osxkeychain'
+else
+    echo "OS: ${OS} not support."
+    exit 1
+fi
+[ ! -d ~/.Trash ] && mkdir ~/.Trash
+[ ! -d ~/.bin ] && mkdir ~/.bin
+cd ~/.bin/ && git clone https://github.com/scop/bash-completion.git && cd -
+mkdir ~/.bin/git-completion && cd ~/.bin/git-completion && wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && cd -
+
+
+# config inputrc (hot keys)
+[ -f ~/.inputrc ] && mv ~/.inputrc ~/.inputrc.back
+cp -f ./.inputrc ~/.inputrc
+
 
 # config vim
-/bin/rm -rf ~/.vim
-mkdir -p ~/.vim/undo ~/.vim/autoload ~/.config/vim
-cd ~/.vim/autoload && wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && cd -
-/bin/rm -rf ~/.vimrc && cp ./.vimrc ~/
+[ -f ~/.vimrc ] && mv ~/.vimrc ~/.vimr.back
+cp -f ./.vimrc ~/.vimrc
+[ ! -f ~/.history ] && touch ~/.history
+
 
 # config git
-git config --global user.email "arelive@yeah.net"
-git config --global user.name "arelivem"
-git config --global credential.helper store  # config credential type
-git config --global credential.useHttpPath true  # config match git path
+if which git &> /dev/null; then
+    git config --global credential.helper ${GIT_STORE}  # config credential type
+    git config --global credential.useHttpPath true  # config match git path
+else
+    echo "git is not installed."
+fi
+
 
 # config tmux
-/bin/rm -rf ~/.tmux.conf && cp ./.tmux.conf ~/
+[ -f ~/.tmux.conf ] && mv ~/.tmux.conf ~/.tmux.conf.back
+cp -f ./.tmux.conf ~/.tmux.conf
+
 
 echo "============================================================="
 echo "Install finished."
 echo ""
-echo "Log out and log in again for the settings to take effect."
+echo "Please re-login for the settings to take effect."
 echo "============================================================="
