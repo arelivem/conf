@@ -1,14 +1,51 @@
 # Installation Steps
 
-1. Install **wget, curl, tldr, git, gcc, g++, gdb, vim, tmux, zip, unzip**
+## Common Environment
+1. Install **wget, curl, git, gcc, g++, gdb, vim, zip, unzip**, option package: **tldr, tmux**
 
-    `sudo apt install wget curl tldr git gcc g++ gdb vim tmux zip unzip`
+    `sudo apt install wget curl git gcc g++ gdb vim zip unzip`
+
+2. Change default shell `$SHELL`
+    
+    `chsh -s /bin/bash`
 
 2. Execute **install.sh**
 
     `bash install.sh`
 
-3. Install **nvm** and **node.js** ( lower than **coc.nvim** required version )
+## Conda
+1. Install **anaconda**
+
+    * download [miniconda](https://docs.conda.io/projects/miniconda) ~~[anaconda installer](https://www.anaconda.com/products/individual#Downloads)~~
+
+    * execute installer and configure conda-path `~/.bin/conda`.
+
+    * choose **yes** to **conda init**
+
+    * cancel the **base** environment that is automatically activated every time conda starts: `conda config --set auto_activate_base false`
+
+    * configure source mirror, profile: `~/.condarc`
+
+2. conda usage:
+
+    * install plug-in: `conda install nb_conda`
+
+    * uninstall plug-in: `conda remove nb_conda` or `conda uninstall nb_conda`
+
+    * create environment: `conda create -n py-2.7 python=2.7.15` or `conda create -n py-3.6 python=3.6.5`. If you want to use it in the notebook, you need to install **ipykernel** `pip install ipykernel`
+
+    * remove environment: `conda remove -n py-2.7 --all`
+
+    * activate environment: `conda activate py-2.7`
+
+    * deactivate environment: `conda deactivate`
+
+    * show python versions: `conda search python`
+
+    * install a specific version package: `conda install package=version` or `pip install package==version`
+
+## Vim Plugin
+1. Install **nvm** and **node.js** ( lower than **coc.nvim** required version )
 
     * open [nvm website](https://github.com/nvm-sh/nvm), follow the manual to install
 
@@ -24,17 +61,41 @@
 
         * use a version: `nvm use node-version`
 
-4. Install **vim** ( lower than **coc.nvim** required version )
+2. Install **vim** ( lower than **coc.nvim** required version )
 
     * download [vim](https://www.vim.org) source code
 
-    * execute `./configure --prefix=$HOME/.local/vim`
+    * execute `./configure --prefix=$HOME/.bin/vim`
 
     * compile and install `make -j 16 && make install`
 
-    * link executable file to **~/.bin** `ln -s $HOME/.local/vim/bin/vim $HOME/.bin/vim`
+    * link executable file to **~/.bin** `ln -s $HOME/.bin/vim/bin/vim $HOME/.bin/vim`
 
-5. Configure **vim**
+3. Configure **vim**
+
+    install vim-plug: `cd ~/.vim/autoload && wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && cd -`
+
+    ```
+    " vim plugged
+    " https://github.com/junegunn/vim-plug
+    call plug#begin('~/.vim/plugged')
+
+    " alignment plug
+    Plug 'godlygeek/tabular', {'for': ['c', 'cpp', 'cs', 'css', 'go', 'javascript', 'html/xhtml', 'make', 'lua', 'php', 'plsql', 'perl', 'objc', 'proto', 'r', 'ruby', 'scala', 'sql', 'tex', 'yaml', 'java', 'python', 'sh', 'vim', 'markdown']}
+
+    " lsp (language server protocol)
+    " coc.nvim: https://github.com/neoclide/coc.nvim
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+    call plug#end()
+
+
+    " coc.nvim conf
+    "let g:coc_node_path = '~/.bin/node-16.13.0/bin/node'
+    let g:coc_config_home = '~/.config/vim'
+    ```
+
+4. Configure Plugin
 
     * install plug-in: `:PlugInstall`
 
@@ -49,34 +110,3 @@
     * install **clangd.install**: `:CocCommand clangd.install`, then add **clangd** into **$PATH** `ln -s $HOME/.config/coc/coc-clangd-data/install/bin/clangd $HOME/.bin/clangd`
 
     * update **coc.nvim update extensions**: `:CocUpdate`
-
-6. Install **anaconda**
-
-    * download [anaconda installer](https://www.anaconda.com/products/individual#Downloads)
-
-    * execute installer and configure conda-path [~/.local/anaconda].
-
-    * choose **not** to **conda init**
-
-    * cancel the **base** environment that is automatically activated every time conda starts: `conda config --set auto_activate_base false`
-
-    * configure source mirror [**option**], profile: `~/.condarc`
-
-    * conda usage:
-
-        * install plug-in: `conda install nb_conda`
-
-        * uninstall plug-in: `conda remove nb_conda` or `conda uninstall nb_conda`
-
-        * create environment: `conda create -n py-2.7 python=2.7.15` or `conda create -n py-3.6 python=3.6.5`. If you want to use it in the notebook, you need to install **ipykernel** `pip install ipykernel`
-
-        * remove environment: `conda remove -n py-2.7 --all`
-
-        * activate environment: `conda activate py-2.7`
-
-        * deactivate environment: `conda deactivate`
-
-        * show python versions: `conda search python`
-
-        * install a specific version package: `conda install package=version` or `pip install package==version`
-

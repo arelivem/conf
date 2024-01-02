@@ -1,25 +1,28 @@
 # color name
 reset_all='\[\033[0m\]'
 bold='\[\033[1m\]'
-reset_bold='\[\003[21m\]'
 under_lined='\[\033[4m\]'
-cyan='\[\033[36m\]'
-light_grey='\[\033[37m\]'
+black='\[\033[30m\]'
+red='\[\033[31m\]'
 green='\[\033[32m\]'
 yellow='\[\033[33m\]'
-magenta='\[\033[35m\]'
-red='\[\033[31m\]'
 blue='\[033[34m\]'
-default='\[\033[39m\]'
+magenta='\[\033[35m\]'
+cyan='\[\033[36m\]'
+white='\[\033[37m\]'
+defalut='\[\033[39m\]'
+
+# OS name
+OS=$(uname -s)
 
 # confirm color prompt
 case "$TERM" in
-    xterm*|konsole*|rxvt*) color_prompt="yes";;
+    xterm*|konsole*|rxvt*) color_prompt='yes';;
 esac
-color_prompt="yes"
+color_prompt='yes'
 
 # git prompt
-function __prompt_git()
+function _prompt_git()
 {
     local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     if [ ${#branch} -ne 0 ]; then
@@ -42,129 +45,104 @@ function __prompt_git()
 
 # PS1
 if [ "${color_prompt}" == 'yes' ]; then
-    PROMPT_PREFIX="${bold}${cyan}☘ ${light_grey}[${green}\u${yellow}@${magenta}\h${reset_all}:${under_lined}\w${reset_all}${bold}${light_grey}]${reset_all} "
+    PROMPT_PREFIX="${bold}${cyan}☘ ${white}[${green}\u${yellow}@${magenta}\h${reset_all}:${under_lined}\w${reset_all}${bold}${white}]${reset_all} "
     PROMPT_NEWLINE="${reset_all}\n${reset_all}"
     PROMPT_SUFFIX="${bold}${cyan}♪ ${reset_all}"
-    PS1="${PROMPT_PREFIX}"'$(__prompt_git)'"${PROMPT_NEWLINE}""${PROMPT_SUFFIX}"
+    PS1="${PROMPT_PREFIX}"'$(_prompt_git)'"${PROMPT_NEWLINE}""${PROMPT_SUFFIX}"
 else
-    PS1='☁ [\u@\h:\w]$(__prompt_git)\[\e[m\]\n➜ \[\e[m\]'
+    PS1='☁ [\u@\h:\w]$(_prompt_git)\[\e[0m\]\n➜ \[\e[0m\]'
 fi
 
 # shopt
 shopt -s checkwinsize
 shopt -s cmdhist
-shopt -s lithist
 shopt -s expand_aliases
 shopt -s extglob
 shopt -s extquote
 shopt -s histappend
+shopt -s lithist
 shopt -s histreedit
 shopt -s histverify
 shopt -s interactive_comments
 
 # history
-export HISTFILE=$HOME/.bash_history
+export HISTFILE="$HOME/.history"
 export HISTSIZE=10000
 export HISTFILESIZE=30000
 # export HISTTIMEFORMAT="%F "
-export HISTCONTROL=ignoreboth
+export HISTCONTROL='ignorespace:erasedups'
 # export HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
 export PROMPT_COMMAND='history -a'
 set -o history
 
 # rename rm
-# alias rm='trash -F'  # mac
-
-alias rm=__rm
-function __rm()
+function _rm_back()
 {
     /bin/mv --backup=t $@ $HOME/.Trash/
 }
+if [ "${OS}" == 'Linux' ]; then
+    alias rm=_rm_back
+elif [ "${OS}" == 'Darwin' ]; then
+    alias rm='trash -F'   # mac
+fi
 
-alias clean-trash=__clean_trash
-function __clean_trash()
+function _clean_trash()
 {
-    read -p "clean .Trash? (y or n) " confirm
-    [ "$confirm" == 'y' ] || [ "$confirm" == 'Y' ] && /bin/rm -rf $HOME/.Trash/*
+    read -p 'clean .Trash? (y or n) ' confirm
+    [ "${confirm}" == 'y' ] || [ "${confirm}" == 'Y' ] && /bin/rm -rf $HOME/.Trash/*
 }
+alias clean-trash=_clean_trash
 
 # tmux
-alias tmux=__tmux
-function __tmux()
+function _tmux_new()
 {
-    tmux_cmd='command tmux' # command cancels all alias.
+    local tmux_cmd='command tmux' # command cancels all alias.
     if [ $# -gt 0 ]; then
-        $tmux_cmd $@
+        ${tmux_cmd} $@
     else
-        $tmux_cmd attach
+        ${tmux_cmd} attach
         if [ $? -ne 0 ]; then
-            $tmux_cmd new-session
+            ${tmux_cmd} new-session
         fi
     fi
 }
-
-# bash completion
-# https://github.com/scop/bash-completion
-[ -f $HOME/.local/bash-completion/bash_completion ] && \
-    . $HOME/.local/bash-completion/bash_completion
-
-# git completion
-# https://github.com/git/git/tree/master/contrib/completion
-[ -f $HOME/.local/git-completion/git-completion.bash ] && \
-    . $HOME/.local/git-completion/git-completion.bash
+alias tmux=_tmux_new
 
 # alias
 alias sh='/bin/bash'
-alias mv='/bin/mv -i'
-alias cp='/bin/cp -i'
-alias ls='ls -F --color=auto'  # linux
-# alias ls='ls -FG'  # mac
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+if [ "${OS}" == 'Linux' ]; then
+    alias ls='ls -F --color=auto'  # linux
+elif [ "${OS}" == 'Darwin' ]; then
+    alias ls='ls -FG'  # mac
+fi
 alias ll='ls -Alh'
 alias la='ls -A'
 alias l='ls -Clh'
+alias mv='/bin/mv -i'
+alias cp='/bin/cp -i'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 alias vi='vim'
-alias man='tldr'
-
+test -f $HOME/.alias && . $HOME/.alias
 
 # static link library
-if [ -z "$ORIGIN_LIBRARY_PATH" ]; then
-    export ORIGIN_LIBRARY_PATH="$LIBRARY_PATH"
-fi
-export LIBRARY_PATH="$ORIGIN_LIBRARY_PATH"
+[ -z "${ORIGIN_LIBRARY_PATH}" ] && export ORIGIN_LIBRARY_PATH="$LIBRARY_PATH"
+export LIBRARY_PATH="${ORIGIN_LIBRARY_PATH}"
 # dynamic link library
-if [ -z "$ORIGIN_LD_LIBRARY_PATH" ]; then
-    export ORIGIN_LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
-fi
-export LD_LIBRARY_PATH="$ORIGIN_LD_LIBRARY_PATH"
+[ -z "${ORIGIN_LD_LIBRARY_PATH}" ] && export ORIGIN_LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="${ORIGIN_LD_LIBRARY_PATH}"
 # env path
-if [ -z "$ORIGIN_PATH" ]; then
-    export ORIGIN_PATH="$HOME/.bin:$PATH"
-fi
-export PATH="$ORIGIN_PATH"
+[ -z "${ORIGIN_PATH}" ] && export ORIGIN_PATH="$HOME/.bin:$HOME/bin/:$PATH"
+export PATH="${ORIGIN_PATH}"
 
+# bash completion
+# https://github.com/scop/bash-completion
+[ -f $HOME/.bin/bash-completion/bash_completion ] && \
+    . $HOME/.bin/bash-completion/bash_completion
 
-# >>> nvm initialize >>>
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# <<< nvm initialize <<<
-
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$($HOME/.local/anaconda/bin/conda 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f $HOME/.local/anaconda/etc/profile.d/conda.sh ]; then
-        . $HOME/.local/anaconda/etc/profile.d/conda.sh
-    else
-        export PATH="$HOME/.local/anaconda/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+# git completion
+# https://github.com/git/git/tree/master/contrib/completion
+[ -f $HOME/.bin/git-completion/git-completion.bash ] && \
+    . $HOME/.bin/git-completion/git-completion.bash
 
