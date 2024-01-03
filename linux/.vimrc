@@ -11,17 +11,23 @@ let mapleader="e"
 " esc
 noremap <Leader>e <Esc>
 inoremap jk <Esc>
+" Ctrl-v
+noremap <Leader>v <C-v>
+inoremap <Leader>v <C-v>
+noremap <C-e> <C-v>
+inoremap <C-e> <C-v>
+cnoremap <C-e> <C-v>
 " complete
-inoremap <C-l> <Nop>
-inoremap <C-l> <C-n>
+inoremap <C-p> <C-n>
 " file edit
 noremap fw :wq<Enter>
 inoremap fw <Esc>:wq<Enter>
 noremap fq :q<Enter>
 inoremap fq <Esc>:q<Enter>
 " edit
-noremap <Leader>r <C-r>
-noremap U :redo<Enter>
+noremap U <C-r>
+"noremap U :redo<Enter>
+noremap H :nohl<Enter>
 " window
 nnoremap sv :vsplit 
 nnoremap sh :split 
@@ -130,12 +136,12 @@ set pumheight=20   " maximum height of the popup menu
 set confirm   " ask what to do about unsaved/read-only files
 "set undofile   " save undo information in a file
 set undolevels=1000   " maximum number of changes that can be undo;
-set swapfile   " whether to use a swapfile for a buffer
+set noswapfile   " whether to use a swapfile for a buffer
 set nobackup   " make a backup before overwriting a file
 
 
 " commands
 set history=500   " keep 500 commands and 500 search patterns in the history
-set wildmenu   " use menu for command line completion
+set wildmenu   " use menu for command line completion [enable wildmenu, statusline may not been auto-changed]
 set wildmode=full   "  mode for 'wildchar' command-line expansion
 
