@@ -9,9 +9,31 @@
     
     `chsh -s /bin/bash`
 
-2. Execute **install.sh**
+3. Execute **install.sh**
 
     `bash install.sh`
+
+4. Install git & bash completion
+    ```bash
+    # install
+    [ ! -d ~/.bin ] && mkdir ~/.bin
+    
+    cd ~/.bin/ && git clone https://github.com/scop/bash-completion.git && cd -
+
+    mkdir ~/.bin/git-completion && cd ~/.bin/git-completion && wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && cd -
+
+
+    # .bashrc conf
+    # bash completion
+    # https://github.com/scop/bash-completion
+    [ -f $HOME/.bin/bash-completion/bash_completion ] && \
+        . $HOME/.bin/bash-completion/bash_completion
+    
+    # git completion
+    # https://github.com/git/git/tree/master/contrib/completion
+    [ -f $HOME/.bin/git-completion/git-completion.bash ] && \
+        . $HOME/.bin/git-completion/git-completion.bash
+    ```
 
 ## Conda
 1. Install **anaconda**

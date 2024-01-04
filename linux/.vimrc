@@ -9,16 +9,13 @@ set mouse=a   " enable the use of mouse clicks
 map e <Nop>
 let mapleader="e"
 " esc
-noremap <Leader>e <Esc>
 inoremap jk <Esc>
 " Ctrl-v
-noremap <Leader>v <C-v>
-inoremap <Leader>v <C-v>
 noremap <C-e> <C-v>
 inoremap <C-e> <C-v>
 cnoremap <C-e> <C-v>
 " complete
-inoremap <C-p> <C-n>
+"inoremap <C-f> <C-n>
 " file edit
 noremap fw :wq<Enter>
 inoremap fw <Esc>:wq<Enter>
@@ -28,6 +25,14 @@ inoremap fq <Esc>:q<Enter>
 noremap U <C-r>
 "noremap U :redo<Enter>
 noremap H :nohl<Enter>
+noremap <C-b> :setlocal wrap!<Enter>
+inoremap <C-b> <Esc>:setlocal wrap!<Enter>i
+noremap J gj
+noremap K gk
+" paste
+set pastetoggle=<F10>
+noremap <C-y> :setlocal paste!<Enter>
+inoremap <C-y> <Esc>:setlocal paste!<Enter>i
 " window
 nnoremap sv :vsplit 
 nnoremap sh :split 
@@ -66,7 +71,7 @@ endif
 set laststatus=2   " tells when last window has status lines, 2: always
 set ruler   " display the cursor position in the lower right corner
 set showcmd   " display an incomplete command in the lower right corner
-set cmdheight=2   " number of screen lines to use for the command-lin
+set cmdheight=1   " number of screen lines to use for the command-lin
 set showmode   " message on status line to show current mode
 set number   " display line number
 set nowrap   " disable long lines wrap and continue on the next line
@@ -116,7 +121,6 @@ set selectmode=mouse,key   " when to use Select mode instead of Visual mode
 
 " edit
 set nopaste
-set pastetoggle=<F10>
 set autoread   " automatically read it when a file have been changed outside
 set noautowriteall   " disable auto write the contents of the file
 set smartindent   " do smart autoindenting when starting a new line

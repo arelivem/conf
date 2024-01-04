@@ -12,14 +12,17 @@ cyan='\[\033[36m\]'
 white='\[\033[37m\]'
 defalut='\[\033[39m\]'
 
+
 # OS name
 OS=$(uname -s)
+
 
 # confirm color prompt
 case "$TERM" in
     xterm*|konsole*|rxvt*) color_prompt='yes';;
 esac
 color_prompt='yes'
+
 
 # git prompt
 function _prompt_git()
@@ -43,6 +46,7 @@ function _prompt_git()
     fi
 }
 
+
 # PS1
 if [ "${color_prompt}" == 'yes' ]; then
     PROMPT_PREFIX="${bold}${cyan}☘ ${white}[${green}\u${yellow}@${magenta}\h${reset_all}:${under_lined}\w${reset_all}${bold}${white}]${reset_all} "
@@ -52,6 +56,7 @@ if [ "${color_prompt}" == 'yes' ]; then
 else
     PS1='☁ [\u@\h:\w]$(_prompt_git)\[\e[0m\]\n➜ \[\e[0m\]'
 fi
+
 
 # shopt
 shopt -s checkwinsize
@@ -65,8 +70,9 @@ shopt -s histreedit
 shopt -s histverify
 shopt -s interactive_comments
 
+
 # history
-export HISTFILE="$HOME/.history"
+export HISTFILE="$HOME/.bash_history"
 export HISTSIZE=10000
 export HISTFILESIZE=30000
 # export HISTTIMEFORMAT="%F "
@@ -74,6 +80,7 @@ export HISTCONTROL='ignorespace:erasedups'
 # export HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
 export PROMPT_COMMAND='history -a'
 set -o history
+
 
 # rename rm
 function _rm_back()
@@ -86,12 +93,14 @@ elif [ "${OS}" == 'Darwin' ]; then
     alias rm='trash -F'   # mac
 fi
 
+
 function _clean_trash()
 {
     read -p 'clean .Trash? (y or n) ' confirm
     [ "${confirm}" == 'y' ] || [ "${confirm}" == 'Y' ] && /bin/rm -rf $HOME/.Trash/*
 }
 alias clean-trash=_clean_trash
+
 
 # tmux
 function _tmux_new()
@@ -107,6 +116,7 @@ function _tmux_new()
     fi
 }
 alias tmux=_tmux_new
+
 
 # alias
 alias sh='/bin/bash'
@@ -126,23 +136,16 @@ alias egrep='egrep --color=auto'
 alias vi='vim'
 test -f $HOME/.alias && . $HOME/.alias
 
+
 # static link library
-[ -z "${ORIGIN_LIBRARY_PATH}" ] && export ORIGIN_LIBRARY_PATH="$LIBRARY_PATH"
-export LIBRARY_PATH="${ORIGIN_LIBRARY_PATH}"
+[ -z "${BASE_LIBRARY_PATH}" ] && export BASE_LIBRARY_PATH="$LIBRARY_PATH"
+export LIBRARY_PATH="${BASE_LIBRARY_PATH}"
+
 # dynamic link library
-[ -z "${ORIGIN_LD_LIBRARY_PATH}" ] && export ORIGIN_LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="${ORIGIN_LD_LIBRARY_PATH}"
+[ -z "${BASE_LD_LIBRARY_PATH}" ] && export BASE_LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="${BASE_LD_LIBRARY_PATH}"
+
 # env path
-[ -z "${ORIGIN_PATH}" ] && export ORIGIN_PATH="$HOME/.bin:$HOME/bin/:$PATH"
-export PATH="${ORIGIN_PATH}"
-
-# bash completion
-# https://github.com/scop/bash-completion
-[ -f $HOME/.bin/bash-completion/bash_completion ] && \
-    . $HOME/.bin/bash-completion/bash_completion
-
-# git completion
-# https://github.com/git/git/tree/master/contrib/completion
-[ -f $HOME/.bin/git-completion/git-completion.bash ] && \
-    . $HOME/.bin/git-completion/git-completion.bash
+[ -z "${BASE_PATH}" ] && export BASE_PATH="$HOME/.bin:$HOME/bin:$PATH"
+export PATH="${BASE_PATH}"
 

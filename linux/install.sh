@@ -24,8 +24,6 @@ else
 fi
 [ ! -d ~/.Trash ] && mkdir ~/.Trash
 [ ! -d ~/.bin ] && mkdir ~/.bin
-cd ~/.bin/ && git clone https://github.com/scop/bash-completion.git && cd -
-mkdir ~/.bin/git-completion && cd ~/.bin/git-completion && wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && cd -
 
 
 # config inputrc (hot keys)
@@ -42,7 +40,7 @@ cp -f ./.vimrc ~/.vimrc
 # config git
 if which git &> /dev/null; then
     git config --global init.defaultBranch main
-    git config --global core.autocrlf true
+    git config --global core.autocrlf input   # true for Windows
     git config --global credential.helper ${GIT_STORE}  # config credential type
     git config --global credential.useHttpPath true  # config match git path
 else
