@@ -40,7 +40,7 @@ cp -f ./.vimrc ~/.vimrc
 # config git
 if which git &> /dev/null; then
     git config --global init.defaultBranch main
-    git config --global core.autocrlf true
+    git config --global core.autocrlf input   # true for Windows
     git config --global credential.helper ${GIT_STORE}  # config credential type
     git config --global credential.useHttpPath true  # config match git path
 else

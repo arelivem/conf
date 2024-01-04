@@ -27,6 +27,8 @@ noremap U <C-r>
 noremap H :nohl<Enter>
 noremap <C-b> :setlocal wrap!<Enter>
 inoremap <C-b> <Esc>:setlocal wrap!<Enter>i
+noremap J gj
+noremap K gk
 " paste
 set pastetoggle=<F10>
 noremap <C-y> :setlocal paste!<Enter>
