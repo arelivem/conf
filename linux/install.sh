@@ -24,8 +24,6 @@ else
 fi
 [ ! -d ~/.Trash ] && mkdir ~/.Trash
 [ ! -d ~/.bin ] && mkdir ~/.bin
-cd ~/.bin/ && git clone https://github.com/scop/bash-completion.git && cd -
-mkdir ~/.bin/git-completion && cd ~/.bin/git-completion && wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && cd -
 
 
 # config inputrc (hot keys)
