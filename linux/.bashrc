@@ -49,12 +49,25 @@ function _prompt_git()
 
 # PS1
 if [ "${color_prompt}" == 'yes' ]; then
-    PROMPT_PREFIX="${bold}${cyan}☘ ${white}[${green}\u${yellow}@${magenta}\h${reset_all}:${under_lined}\w${reset_all}${bold}${white}]${reset_all} "
+    PROMPT_PREFIX_ROOT="${bold}${red}! ${reset_all}"
+    PROMPT_PREFIX_USER="${bold}${cyan}% ${reset_all}"
+    PROMPT_INFO="${bold}${white}[${green}\u${yellow}@${magenta}\h${reset_all}:${under_lined}\w${reset_all}${bold}${white}]${reset_all}"
     PROMPT_NEWLINE="${reset_all}\n${reset_all}"
-    PROMPT_SUFFIX="${bold}${cyan}♪ ${reset_all}"
-    PS1="${PROMPT_PREFIX}"'$(_prompt_git)'"${PROMPT_NEWLINE}""${PROMPT_SUFFIX}"
+    PROMPT_SUFFIX_ROOT="${bold}${red}\\$ ${reset_all}"
+    PROMPT_SUFFIX_USER="${bold}${cyan}\\$ ${reset_all}"
+    if [ $UID -eq 0 ]; then
+        PS1="${PROMPT_PREFIX_ROOT}${PROMPT_INFO}${PROMPT_NEWLINE}${PROMPT_SUFFIX_ROOT}"
+    else
+        PS1="${PROMPT_PREFIX_USER}${PROMPT_INFO}\$(_prompt_git)${PROMPT_NEWLINE}${PROMPT_SUFFIX_USER}"
+    fi
 else
-    PS1='☁ [\u@\h:\w]$(_prompt_git)\[\e[0m\]\n➜ \[\e[0m\]'
+    #PS1='☁ [\u@\h:\w]$(_prompt_git)\n➜ '
+    #PS1='☘ [\u@\h:\w]$(_prompt_git)\n♪ '
+    if [ $UID -eq 0 ]; then
+        PS1='! [\u@\h:\w]\n\$ '
+    else
+        PS1='% [\u@\h:\w]$(_prompt_git)\n\$ '
+    fi
 fi
 
 
