@@ -32,20 +32,20 @@ function _prompt_git()
         #local work_status='●'
         #local cache_status='●'
         local work_status='+'
-        local work_color="${red}"
+        local work_color='\033[31m'
         local cache_status='+'
-        local cache_color="${red}"
+        local cache_color='\033[31m'
         if ! git ls-files --others --exclude-standard --directory --no-empty-directory --error-unmatch -- ':/*' &> /dev/null && \
           git diff --no-ext-diff --quiet &> /dev/null; then
             work_status='-'
-            work_color="${green}"
+            work_color='\033[32m'
         fi
         if git diff --no-ext-diff --cached --quiet &> /dev/null; then
             cache_status='-'
-            cache_color="${green}"
+            cache_color='\033[32m'
         fi
         if [ "${color_prompt}" == 'yes' ]; then
-            echo -e "${bold}${white}<${blue}${branch}${work_color}${work_status}${cache_color}${cache_status}${white}>${reset_all}"
+            echo -e "\033[1m\033[37m<\033[34m${branch}${work_color}${work_status}${cache_color}${cache_status}\033[37m>\033[0m"
         else
             echo -e "<${branch}${work_status}${cache_status}>"
         fi
@@ -64,7 +64,8 @@ if [ "${color_prompt}" == 'yes' ]; then
     if [ $UID -eq 0 ]; then
         PS1="${PROMPT_PREFIX_ROOT}${PROMPT_INFO}${PROMPT_NEWLINE}${PROMPT_SUFFIX_ROOT}"
     else
-        PS1="${PROMPT_PREFIX_USER}${PROMPT_INFO}$(_prompt_git)${PROMPT_NEWLINE}${PROMPT_SUFFIX_USER}"
+        #PS1="${PROMPT_PREFIX_USER}${PROMPT_INFO}"'$(_prompt_git)'"${PROMPT_NEWLINE}${PROMPT_SUFFIX_USER}"
+        PS1="${PROMPT_PREFIX_USER}${PROMPT_INFO}\$(_prompt_git)${PROMPT_NEWLINE}${PROMPT_SUFFIX_USER}"
     fi
 else
     #PS1='☁ [\u@\h:\w]$(_prompt_git)\n➜ '
