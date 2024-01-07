@@ -140,7 +140,7 @@ set pumheight=20   " maximum height of the popup menu
 set confirm   " ask what to do about unsaved/read-only files
 "set undofile   " save undo information in a file
 set undolevels=1000   " maximum number of changes that can be undo;
-set noswapfile   " whether to use a swapfile for a buffer
+set swapfile   " whether to use a swapfile for a buffer
 set nobackup   " make a backup before overwriting a file
 
 
