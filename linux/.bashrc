@@ -6,7 +6,7 @@ black='\[\033[30m\]'
 red='\[\033[31m\]'
 green='\[\033[32m\]'
 yellow='\[\033[33m\]'
-blue='\[033[34m\]'
+blue='\[\033[34m\]'
 magenta='\[\033[35m\]'
 cyan='\[\033[36m\]'
 white='\[\033[37m\]'
@@ -29,19 +29,25 @@ function _prompt_git()
 {
     local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     if [ ${#branch} -ne 0 ]; then
-        local s_work='\033[31m●'
-        local s_cache='\033[31m●'
+        #local work_status='●'
+        #local cache_status='●'
+        local work_status='+'
+        local work_color='\033[31m'
+        local cache_status='+'
+        local cache_color='\033[31m'
         if ! git ls-files --others --exclude-standard --directory --no-empty-directory --error-unmatch -- ':/*' &> /dev/null && \
           git diff --no-ext-diff --quiet &> /dev/null; then
-            s_work='\033[32m●'
+            work_status='-'
+            work_color='\033[32m'
         fi
         if git diff --no-ext-diff --cached --quiet &> /dev/null; then
-            s_cache='\033[32m●'
+            cache_status='-'
+            cache_color='\033[32m'
         fi
         if [ "${color_prompt}" == 'yes' ]; then
-            echo -e "\033[1;37m<\033[34m${branch}${s_work}${s_cache}\033[37m>\033[0m"
+            echo -e "\033[1m\033[37m<\033[34m${branch}${work_color}${work_status}${cache_color}${cache_status}\033[37m>\033[0m"
         else
-            echo -e "<${branch}>"
+            echo -e "<${branch}${work_status}${cache_status}>"
         fi
     fi
 }
@@ -58,6 +64,7 @@ if [ "${color_prompt}" == 'yes' ]; then
     if [ $UID -eq 0 ]; then
         PS1="${PROMPT_PREFIX_ROOT}${PROMPT_INFO}${PROMPT_NEWLINE}${PROMPT_SUFFIX_ROOT}"
     else
+        #PS1="${PROMPT_PREFIX_USER}${PROMPT_INFO}"'$(_prompt_git)'"${PROMPT_NEWLINE}${PROMPT_SUFFIX_USER}"
         PS1="${PROMPT_PREFIX_USER}${PROMPT_INFO}\$(_prompt_git)${PROMPT_NEWLINE}${PROMPT_SUFFIX_USER}"
     fi
 else
