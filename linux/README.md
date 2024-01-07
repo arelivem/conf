@@ -35,6 +35,21 @@
         . $HOME/.bin/git-completion/git-completion.bash
     ```
 
+5. Proxy conf
+    ```bash
+    # create $HOME/.cmd_proxy
+    # proxy
+    host_ip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
+    proxy_port="7890"
+    export https_proxy="http://${host_ip}:${proxy_port}"
+    export http_proxy="http://${host_ip}:${proxy_port}"
+    export all_proxy="socks5://${host_ip}:${proxy_port}"
+
+    # .bashrc conf
+    # proxy
+    [ -f $HOME/.cmd_proxy ] && . $HOME/.cmd_proxy
+    ```
+
 ## Conda
 1. Install **anaconda**
 
