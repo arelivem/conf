@@ -25,6 +25,7 @@ inoremap fq <Esc>:q<Enter>
 noremap U <C-r>
 "noremap U :redo<Enter>
 noremap H :nohl<Enter>
+noremap L :set number! relativenumber!<Enter>
 noremap <C-b> :setlocal wrap!<Enter>
 inoremap <C-b> <Esc>:setlocal wrap!<Enter>i
 noremap J gj
@@ -74,6 +75,7 @@ set showcmd   " display an incomplete command in the lower right corner
 set cmdheight=1   " number of screen lines to use for the command-lin
 set showmode   " message on status line to show current mode
 set number   " display line number
+set relativenumber " show the line number relative to the line with the cursor in front of each line
 set nowrap   " disable long lines wrap and continue on the next line
 hi CursorLine term=underline cterm=underline ctermbg=NONE ctermfg=NONE gui=underline guibg=NONE guifg=NONE
 set cursorline   " highlight the screen line of the cursor
