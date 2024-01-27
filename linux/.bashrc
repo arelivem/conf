@@ -191,3 +191,7 @@ export LD_LIBRARY_PATH="${BASE_LD_LIBRARY_PATH}"
 [ -z "${BASE_PATH}" ] && export BASE_PATH="$HOME/.bin:$HOME/bin:$PATH"
 export PATH="${BASE_PATH}"
 
+
+# proxy
+[ -f $HOME/.cmd_proxy ] && . $HOME/.cmd_proxy
+
