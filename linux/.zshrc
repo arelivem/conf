@@ -105,7 +105,11 @@ PROMPT_PREFIX="${bold}%(?.${green}%%.${red}!) ${default}${un_bold}"
 PROMPT_INFO="${bold}${white}[${green}%n${yellow}@${magenta}%m${default}${un_bold}:${under_lined}%~${un_under_lined}${bold}${white}]${default}${un_bold}"
 PROMPT_NEWLINE=$'\n%{\r%}'
 PROMPT_SUFFIX="${bold}%(!.${red}#.${cyan}$) ${default}${un_bold}"
-export PROMPT="${PROMPT_PREFIX}${PROMPT_INFO}\$(prompt_git)${PROMPT_NEWLINE}${PROMPT_SUFFIX}"
+if (( $UID == 0 )) {
+    export PROMPT="${PROMPT_PREFIX}${PROMPT_INFO}${PROMPT_NEWLINE}${PROMPT_SUFFIX}"
+} else {
+    export PROMPT="${PROMPT_PREFIX}${PROMPT_INFO}\$(prompt_git)${PROMPT_NEWLINE}${PROMPT_SUFFIX}"
+}
 
 
 # rename rm
@@ -133,11 +137,11 @@ alias clean-trash=_clean_trash
 function _tmux_new()
 {
     local tmux_cmd='command tmux' # command cancels all alias.
-    if (( $# == 0 )) {
+    if (( $# > 0 )) {
         ${tmux_cmd} $@
     } else {
         ${tmux_cmd} attach
-        if (( $? == 0 )) {
+        if (( $? != 0 )) {
             ${tmux_cmd} new-session
         }
     }
