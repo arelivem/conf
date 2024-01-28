@@ -38,6 +38,7 @@ setopt glob_complete
 autoload -Uz compinit
 compinit -d $HOME/.zcompdump
 compinit
+zstyle ':completion:*:default' menu select
 
 bindkey "\e[A" history-beginning-search-backward
 bindkey "\e[B" history-beginning-search-forward
@@ -133,22 +134,6 @@ function _clean_trash()
 alias clean-trash=_clean_trash
 
 
-# tmux
-function _tmux_new()
-{
-    local tmux_cmd='command tmux' # command cancels all alias.
-    if (( $# > 0 )) {
-        ${tmux_cmd} $@
-    } else {
-        ${tmux_cmd} attach
-        if (( $? != 0 )) {
-            ${tmux_cmd} new-session
-        }
-    }
-}
-alias tmux=_tmux_new
-
-
 # alias
 alias sh='/bin/bash'
 if [[ "${OS}" == 'Linux' ]] {
@@ -181,6 +166,21 @@ export LD_LIBRARY_PATH="${BASE_LD_LIBRARY_PATH}"
 export PATH="${BASE_PATH}"
 
 
-# proxy
-[ -f $HOME/.cmd_proxy ] && . $HOME/.cmd_proxy
+# tmux
+function _tmux_new()
+{
+    local tmux_cmd='command tmux' # command cancels all alias.
+    if (( $# > 0 )) {
+        ${tmux_cmd} $@
+    } else {
+        ${tmux_cmd} attach
+        if (( $? != 0 )) {
+            ${tmux_cmd} new-session
+        }
+    }
+}
+alias tmux=_tmux_new
 
+
+# proxy
+[[ -f $HOME/.cmd_proxy ]] && . $HOME/.cmd_proxy

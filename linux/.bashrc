@@ -59,9 +59,9 @@ function prompt_status()
     local status=$?
     if [ "${color_prompt}" == 'yes' ]; then
         if [ ${status} -eq 0 ]; then
-            echo -e "\033[1m\033[32m% \033[0m"
+            echo -e '\033[1m\033[32m% \033[0m'
         else
-            echo -e "\033[1m\033[31m! \033[0m"
+            echo -e '\033[1m\033[31m! \033[0m'
         fi
     else
         if [ ${status} -eq 0 ]; then
@@ -144,22 +144,6 @@ function _clean_trash()
 alias clean-trash=_clean_trash
 
 
-# tmux
-function _tmux_new()
-{
-    local tmux_cmd='command tmux' # command cancels all alias.
-    if [ $# -gt 0 ]; then
-        ${tmux_cmd} $@
-    else
-        ${tmux_cmd} attach
-        if [ $? -ne 0 ]; then
-            ${tmux_cmd} new-session
-        fi
-    fi
-}
-alias tmux=_tmux_new
-
-
 # alias
 alias sh='/bin/bash'
 if [ "${OS}" == 'Linux' ]; then
@@ -190,6 +174,22 @@ export LD_LIBRARY_PATH="${BASE_LD_LIBRARY_PATH}"
 # env path
 [ -z "${BASE_PATH}" ] && export BASE_PATH="$HOME/.bin:$HOME/bin:$PATH"
 export PATH="${BASE_PATH}"
+
+
+# tmux
+function _tmux_new()
+{
+    local tmux_cmd='command tmux' # command cancels all alias.
+    if [ $# -gt 0 ]; then
+        ${tmux_cmd} $@
+    else
+        ${tmux_cmd} attach
+        if [ $? -ne 0 ]; then
+            ${tmux_cmd} new-session
+        fi
+    fi
+}
+alias tmux=_tmux_new
 
 
 # proxy
