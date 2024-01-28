@@ -5,15 +5,11 @@
 
     `sudo apt install wget curl git gcc g++ gdb vim zip unzip`
 
-2. Change default shell `$SHELL`
-    
-    `chsh -s /bin/bash`
+2. Execute **setup.sh**
 
-3. Execute **install.sh**
+    `bash setup.sh`
 
-    `bash install.sh`
-
-4. Install git & bash completion
+3. Install git & bash completion
     ```bash
     # install
     [ ! -d ~/.bin ] && mkdir ~/.bin

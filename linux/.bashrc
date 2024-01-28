@@ -25,10 +25,10 @@ color_prompt='yes'
 
 
 # git prompt
-function _prompt_git()
+function prompt_git()
 {
     local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    if [ ${#branch} -ne 0 ]; then
+    if [ -n "${branch}" ]; then
         #local work_status='●'
         #local cache_status='●'
         local work_status='+'
@@ -53,32 +53,53 @@ function _prompt_git()
 }
 
 
+# result status prompt
+function prompt_status()
+{
+    local status=$?
+    if [ "${color_prompt}" == 'yes' ]; then
+        if [ ${status} -eq 0 ]; then
+            echo -e '\033[1m\033[32m% \033[0m'
+        else
+            echo -e '\033[1m\033[31m! \033[0m'
+        fi
+    else
+        if [ ${status} -eq 0 ]; then
+            echo -e '% '
+        else
+            echo -e '! '
+        fi
+    fi
+}
+
+
 # PS1
 if [ "${color_prompt}" == 'yes' ]; then
-    PROMPT_PREFIX_ROOT="${bold}${red}! ${reset_all}"
-    PROMPT_PREFIX_USER="${bold}${cyan}% ${reset_all}"
     PROMPT_INFO="${bold}${white}[${green}\u${yellow}@${magenta}\h${reset_all}:${under_lined}\w${reset_all}${bold}${white}]${reset_all}"
-    PROMPT_NEWLINE="${reset_all}\n${reset_all}"
+    PROMPT_NEWLINE='\n'
     PROMPT_SUFFIX_ROOT="${bold}${red}\\$ ${reset_all}"
     PROMPT_SUFFIX_USER="${bold}${cyan}\\$ ${reset_all}"
     if [ $UID -eq 0 ]; then
-        PS1="${PROMPT_PREFIX_ROOT}${PROMPT_INFO}${PROMPT_NEWLINE}${PROMPT_SUFFIX_ROOT}"
+        export PS1="\$(prompt_status)${PROMPT_INFO}${PROMPT_NEWLINE}${PROMPT_SUFFIX_ROOT}"
     else
-        #PS1="${PROMPT_PREFIX_USER}${PROMPT_INFO}"'$(_prompt_git)'"${PROMPT_NEWLINE}${PROMPT_SUFFIX_USER}"
-        PS1="${PROMPT_PREFIX_USER}${PROMPT_INFO}\$(_prompt_git)${PROMPT_NEWLINE}${PROMPT_SUFFIX_USER}"
+        #export PS1='$(prompt_status)'"${PROMPT_INFO}"'$(prompt_git)'"${PROMPT_NEWLINE}${PROMPT_SUFFIX_USER}"
+        export PS1="\$(prompt_status)${PROMPT_INFO}\$(prompt_git)${PROMPT_NEWLINE}${PROMPT_SUFFIX_USER}"
     fi
 else
-    #PS1='☁ [\u@\h:\w]$(_prompt_git)\n➜ '
-    #PS1='☘ [\u@\h:\w]$(_prompt_git)\n♪ '
+    #export PS1='☁ [\u@\h:\w]$(prompt_git)\n➜ '
+    #export PS1='☘ [\u@\h:\w]$(prompt_git)\n♪ '
     if [ $UID -eq 0 ]; then
-        PS1='! [\u@\h:\w]\n\$ '
+        export PS1='$(prompt_status)[\u@\h:\w]\n\$ '
     else
-        PS1='% [\u@\h:\w]$(_prompt_git)\n\$ '
+        export PS1='$(prompt_status)[\u@\h:\w]$(prompt_git)\n\$ '
     fi
 fi
 
 
 # shopt
+shopt -u autocd
+shopt -u direxpand
+shopt -s globstar
 shopt -s checkwinsize
 shopt -s cmdhist
 shopt -s expand_aliases
@@ -93,8 +114,8 @@ shopt -s interactive_comments
 
 # history
 export HISTFILE="$HOME/.bash_history"
-export HISTSIZE=10000
-export HISTFILESIZE=30000
+export HISTSIZE=100000
+export HISTFILESIZE=100000
 # export HISTTIMEFORMAT="%F "
 export HISTCONTROL='ignorespace:erasedups'
 # export HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
@@ -116,26 +137,11 @@ fi
 
 function _clean_trash()
 {
-    read -p 'clean .Trash? (y or n) ' confirm
-    [ "${confirm}" == 'y' ] || [ "${confirm}" == 'Y' ] && /bin/rm -rf $HOME/.Trash/*
+    echo -n 'clean .Trash? (Y/n): '
+    read confirm
+    [ "${confirm}" == 'Y' ] && /bin/rm -rf $HOME/.Trash/*
 }
 alias clean-trash=_clean_trash
-
-
-# tmux
-function _tmux_new()
-{
-    local tmux_cmd='command tmux' # command cancels all alias.
-    if [ $# -gt 0 ]; then
-        ${tmux_cmd} $@
-    else
-        ${tmux_cmd} attach
-        if [ $? -ne 0 ]; then
-            ${tmux_cmd} new-session
-        fi
-    fi
-}
-alias tmux=_tmux_new
 
 
 # alias
@@ -168,4 +174,24 @@ export LD_LIBRARY_PATH="${BASE_LD_LIBRARY_PATH}"
 # env path
 [ -z "${BASE_PATH}" ] && export BASE_PATH="$HOME/.bin:$HOME/bin:$PATH"
 export PATH="${BASE_PATH}"
+
+
+# tmux
+function _tmux_new()
+{
+    local tmux_cmd='command tmux' # command cancels all alias.
+    if [ $# -gt 0 ]; then
+        ${tmux_cmd} $@
+    else
+        ${tmux_cmd} attach
+        if [ $? -ne 0 ]; then
+            ${tmux_cmd} new-session
+        fi
+    fi
+}
+alias tmux=_tmux_new
+
+
+# proxy
+[ -f $HOME/.cmd_proxy ] && . $HOME/.cmd_proxy
 
