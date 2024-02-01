@@ -15,7 +15,7 @@ noremap <C-e> <C-v>
 inoremap <C-e> <C-v>
 cnoremap <C-e> <C-v>
 " complete
-"inoremap <C-f> <C-n>
+inoremap <C-l> <C-n>
 " file edit
 noremap fw :wq<Enter>
 inoremap fw <Esc>:wq<Enter>
@@ -77,12 +77,13 @@ set showmode   " message on status line to show current mode
 set number   " display line number
 set relativenumber " show the line number relative to the line with the cursor in front of each line
 set nowrap   " disable long lines wrap and continue on the next line
-hi CursorLine term=underline cterm=underline ctermbg=NONE ctermfg=NONE gui=underline guibg=NONE guifg=NONE
 set cursorline   " highlight the screen line of the cursor
+hi CursorLine term=bold,underline cterm=bold ctermfg=NONE ctermbg=DarkGrey gui=bold guifg=NONE guibg=DarkGrey
+hi CursorLineNr term=bold cterm=bold ctermfg=Yellow ctermbg=DarkGrey gui=bold guifg=Yellow guibg=DarkGrey
 "set list  " show <Tab> and <EOL>
 filetype plugin indent on   " enable filetype detection, using filetype plugin files, using indent files
-"syntax enable   " enable syntax highlighting, actually execute :source $VIMRUNTIME/syntax/syntax.vim
-syntax on   " overrule your settings with the defaults of syntax highlighting
+syntax enable   " enable syntax highlighting, actually execute :source $VIMRUNTIME/syntax/syntax.vim
+"syntax on   " overrule your settings with the defaults of syntax highlighting
 
 
 " statusline
