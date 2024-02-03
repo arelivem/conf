@@ -70,6 +70,28 @@ function vim_config() {
 
     [[ -f ~/.vimrc ]] && mv ~/.vimrc ~/.vimrc.back
     cp -f ./.vimrc ~/.vimrc
+
+    echo -n 'add syntax highlighting (Y/n): '
+    read confirm
+    [[ "${confirm}" == 'Y' ]] && vim_syntax
+}
+
+
+function vim_syntax() {
+    echo 'adding vim syntax highlighting ...'
+
+    [[ ! -d ~/.vim ]] && mkdir ~/.vim
+
+    check_command git
+    git clone https://github.com/vim/vim.git
+
+    [[ ! -d ~/.vim/ftplugin ]] && mkdir ~/.vim/ftplugin
+    cp ./vim/runtime/ftplugin/*.vim ~/.vim/ftplugin
+
+    [[ ! -d ~/.vim/syntax ]] && mkdir ~/.vim/syntax
+    cp ./vim/runtime/syntax/*.vim ~/.vim/syntax
+
+    /bin/rm -rf ./vim
 }
 
 
