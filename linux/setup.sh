@@ -29,16 +29,16 @@ function bash_config() {
     [[ "${confirm}" == 'Y' ]] && check_command /bin/bash && chsh -s /bin/bash
 
     [[ -f ~/.bashrc ]] && mv ~/.bashrc ~/.bashrc.back
-    cp -f ./.bashrc ~/.bashrc
+    cp -f ./.bashrc ~/
 
     if [[ "${OS}" == 'Darwin' ]]; then
         [[ -f ~/.bash_profile ]] && mv ~/.bash_profile ~/.bash_profile.back
-        cp -f ./.bash_profile ~/.bash_profile
+        cp -f ./.bash_profile ~/
     fi
 
     # config inputrc (hot keys)
     [[ -f ~/.inputrc ]] && mv ~/.inputrc ~/.inputrc.back
-    cp -f ./.inputrc ~/.inputrc
+    cp -f ./.inputrc ~/
 
     [[ ! -d ~/.Trash ]] && mkdir ~/.Trash
     [[ ! -d ~/.bin ]] && mkdir ~/.bin
@@ -53,11 +53,11 @@ function zsh_config() {
     [[ "${confirm}" == 'Y' ]] && check_command /bin/zsh && chsh -s /bin/zsh
 
     [[ -f ~/.zshrc ]] && mv ~/.zshrc ~/.zshrc.back
-    cp -f ./.zshrc ~/.zshrc
+    cp -f ./.zshrc ~/
 
     if [[ "${OS}" == 'Darwin' ]]; then
         [[ -f ~/.zprofile ]] && mv ~/.zprofile ~/.zprofile.back
-        cp -f ./.zprofile ~/.zprofile
+        cp -f ./.zprofile ~/
     fi
 
     [[ ! -d ~/.Trash ]] && mkdir ~/.Trash
@@ -69,7 +69,7 @@ function vim_config() {
     echo 'configuring vim ...'
 
     [[ -f ~/.vimrc ]] && mv ~/.vimrc ~/.vimrc.back
-    cp -f ./.vimrc ~/.vimrc
+    cp -f ./.vimrc ~/
 
     echo -n 'add syntax highlighting (Y/n): '
     read confirm
@@ -85,11 +85,13 @@ function vim_syntax() {
     check_command git
     git clone https://github.com/vim/vim.git
 
+    cp ./vim/runtime/filetype.vim ~/.vim/
+
     [[ ! -d ~/.vim/ftplugin ]] && mkdir ~/.vim/ftplugin
-    cp ./vim/runtime/ftplugin/*.vim ~/.vim/ftplugin
+    cp ./vim/runtime/ftplugin/*.vim ~/.vim/ftplugin/
 
     [[ ! -d ~/.vim/syntax ]] && mkdir ~/.vim/syntax
-    cp ./vim/runtime/syntax/*.vim ~/.vim/syntax
+    cp ./vim/runtime/syntax/*.vim ~/.vim/syntax/
 
     /bin/rm -rf ./vim
 }
@@ -116,7 +118,7 @@ function tmux_config() {
     echo 'configuring tmux ...'
 
     [[ -f ~/.tmux.conf ]] && mv ~/.tmux.conf ~/.tmux.conf.back
-    cp -f ./.tmux.conf ~/.tmux.conf
+    cp -f ./.tmux.conf ~/
 }
 
 
@@ -124,7 +126,7 @@ function proxy_config() {
     echo 'configuring proxy ...'
 
     [[ -f ~/.cmd_proxy ]] && mv ~/.cmd_proxy ~/.cmd_proxy.back
-    cp -f ./.cmd_proxy ~/.cmd_proxy
+    cp -f ./.cmd_proxy ~/
 }
 
 

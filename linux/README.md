@@ -15,6 +15,10 @@
 
     `au BufNewFile,BufRead *.scala setf scala`
 
+    Add a path to `runtimepath`:
+
+    `set runtimepath+=~/.vim`
+
 3. Install git & bash completion
     ```bash
     # install
