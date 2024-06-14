@@ -102,7 +102,7 @@ function prompt_git()
     }
 }
 
-PROMPT_PREFIX="${bold}%(?.${green}%%.${red}!) ${default}${un_bold}"
+PROMPT_PREFIX="${bold}%(?.${green}-.${red}!) ${default}${un_bold}"
 PROMPT_INFO="${bold}${white}[${green}%n${yellow}@${magenta}%m${default}${un_bold}:${under_lined}%~${un_under_lined}${bold}${white}]${default}${un_bold}"
 PROMPT_NEWLINE=$'\n%{\r%}'
 PROMPT_SUFFIX="${bold}%(!.${red}#.${cyan}$) ${default}${un_bold}"

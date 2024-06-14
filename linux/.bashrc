@@ -59,13 +59,13 @@ function prompt_status()
     local status=$?
     if [ "${color_prompt}" == 'yes' ]; then
         if [ ${status} -eq 0 ]; then
-            echo -e '\033[1m\033[32m% \033[0m'
+            echo -e '\033[1m\033[32m- \033[0m'
         else
             echo -e '\033[1m\033[31m! \033[0m'
         fi
     else
         if [ ${status} -eq 0 ]; then
-            echo -e '% '
+            echo -e '- '
         else
             echo -e '! '
         fi

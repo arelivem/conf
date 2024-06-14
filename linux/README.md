@@ -9,26 +9,36 @@
 
     `bash setup.sh`
 
+4. Vim support syntax highlighting
+
+    If a supported file type exists but doesn't work, add it to the configuration file: **.vimrc**:
+
+    `au BufNewFile,BufRead *.scala setf scala`
+
+    Add a path to `runtimepath`:
+
+    `set runtimepath+=~/.vim`
+
 3. Install git & bash completion
     ```bash
     # install
-    [ ! -d ~/.bin ] && mkdir ~/.bin
+    [ ! -d ~/.bash ] && mkdir ~/.bash
     
-    cd ~/.bin/ && git clone https://github.com/scop/bash-completion.git && cd -
+    cd ~/.bash/ && git clone https://github.com/scop/bash-completion.git && cd -
 
-    mkdir ~/.bin/git-completion && cd ~/.bin/git-completion && wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && cd -
+    mkdir ~/.bash/git-completion && cd ~/.bash/git-completion && wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash && cd -
 
 
     # .bashrc conf
     # bash completion
     # https://github.com/scop/bash-completion
-    [ -f $HOME/.bin/bash-completion/bash_completion ] && \
-        . $HOME/.bin/bash-completion/bash_completion
+    [ -f $HOME/.bash/bash-completion/bash_completion ] && \
+        . $HOME/.bash/bash-completion/bash_completion
     
     # git completion
     # https://github.com/git/git/tree/master/contrib/completion
-    [ -f $HOME/.bin/git-completion/git-completion.bash ] && \
-        . $HOME/.bin/git-completion/git-completion.bash
+    [ -f $HOME/.bash/git-completion/git-completion.bash ] && \
+        . $HOME/.bash/git-completion/git-completion.bash
     ```
 
 ## Conda

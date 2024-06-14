@@ -11,11 +11,12 @@ let mapleader="e"
 " esc
 inoremap jk <Esc>
 " Ctrl-v
+noremap <Leader>v <C-v>
 noremap <C-e> <C-v>
 inoremap <C-e> <C-v>
 cnoremap <C-e> <C-v>
 " complete
-"inoremap <C-f> <C-n>
+inoremap <C-l> <C-n>
 " file edit
 noremap fw :wq<Enter>
 inoremap fw <Esc>:wq<Enter>
@@ -77,35 +78,58 @@ set showmode   " message on status line to show current mode
 set number   " display line number
 set relativenumber " show the line number relative to the line with the cursor in front of each line
 set nowrap   " disable long lines wrap and continue on the next line
-hi CursorLine term=underline cterm=underline ctermbg=NONE ctermfg=NONE gui=underline guibg=NONE guifg=NONE
 set cursorline   " highlight the screen line of the cursor
+hi CursorLine term=bold,underline cterm=bold ctermfg=NONE ctermbg=DarkGrey gui=bold guifg=NONE guibg=DarkGrey
+hi CursorLineNr term=bold,underline cterm=bold ctermfg=Yellow ctermbg=DarkGrey gui=bold guifg=Yellow guibg=DarkGrey
 "set list  " show <Tab> and <EOL>
 filetype plugin indent on   " enable filetype detection, using filetype plugin files, using indent files
-"syntax enable   " enable syntax highlighting, actually execute :source $VIMRUNTIME/syntax/syntax.vim
-syntax on   " overrule your settings with the defaults of syntax highlighting
+syntax enable   " enable syntax highlighting, actually execute :source $VIMRUNTIME/syntax/syntax.vim
+"syntax on   " overrule your settings with the defaults of syntax highlighting
 
 
 " statusline
-hi User1 cterm=bold ctermfg=0 ctermbg=7
-hi User2 cterm=bold ctermfg=1 ctermbg=7
+let g:currentmode={
+    \ 'n'  : 'Normal',
+    \ 'no' : 'Normal·Operator Pending',
+    \ 'i'  : 'Insert',
+    \ 'v'  : 'Visual',
+    \ 'V'  : 'V·Line',
+    \ '' : 'V·Block',
+    \ 's'  : 'Select',
+    \ 'S'  : 'S·Line',
+    \ '' : 'S·Block',
+    \ 'R'  : 'Replace',
+    \ 'Rv' : 'V·Replace',
+    \ 'c'  : 'Command',
+    \ 'ce' : 'Ex',
+    \ 'cv' : 'Vim Ex',
+    \ 'r'  : 'Prompt',
+    \ 'rm' : 'More',
+    \ 'r?' : 'Confirm',
+    \ '!'  : 'Shell',
+    \ 't'  : 'Terminal'
+    \}
+hi User1 cterm=bold ctermfg=Black ctermbg=White gui=bold guifg=Black guibg=White
+hi User2 cterm=bold ctermfg=Black ctermbg=Green gui=bold guifg=Black guibg=Green
 set statusline=
-set statusline+=%1*[%n]                                      " buffer number
-set statusline+=%1*\ %<%f                                    " path to the file in the buffer
-set statusline+=%1*\ %=%y                                    " file type
-set statusline+=%1*\ [%{&fenc!=''?&fenc:&enc}]               " file encoding
-set statusline+=%1*\ [%{&ff}]                                " file format (dos<CR><NL>/unix<NL>/mac<CR>)
-set statusline+=%1*\ row:%2*%l/%L                            " line number / number of lines in buffer
-set statusline+=%1*\ col:%2*%002c                            " column number
-set statusline+=%1*\ %m%r%w                                  " modifiable?readonly?preview?
-set statusline+=%1*\ %P\                                     " percentage through file of displayed
+"set statusline+=%2*[%n]                                      " buffer number
+set statusline+=%2*\ %{g:currentmode[mode()]}\                " vim mode
+set statusline+=%1*\ %<%F                                     " path to the file in the buffer
+set statusline+=%1*\ %=[%{&ff}                                " file format (dos<CR><NL>/unix<NL>/mac<CR>)
+set statusline+=%1*\|%{&fenc!=''?&fenc:&enc}                  " file encoding
+set statusline+=%1*\|%Y]                                      " file type
+set statusline+=%1*\ %m%r%h%w                                 " modifiable?readonly?helpfile?preview?
+set statusline+=%2*\ (%l/%L,                                  " line number / number of lines in buffer
+set statusline+=%2*%c)                                        " column number
+set statusline+=%2*\ %P\                                      " percentage through file of displayed
 
 
 " view
 set splitbelow   " new window from split is below the current one
 set splitright   " new window is put right of the current one
-set scrolloff=0   " minimum number of lines above and below cursor
+set scrolloff=1   " minimum number of lines above and below cursor
 set sidescroll=2   " minimum number of columns to scroll horizontal
-set sidescrolloff=0   " minimum number of columns to left and right of cursor
+set sidescrolloff=1   " minimum number of columns to left and right of cursor
 
 
 " search
@@ -147,7 +171,7 @@ set nobackup   " make a backup before overwriting a file
 
 
 " commands
-set history=500   " keep 500 commands and 500 search patterns in the history
+set history=5000   " keep 500 commands and 500 search patterns in the history
 set wildmenu   " use menu for command line completion [enable wildmenu, statusline may not been auto-changed]
 set wildmode=full   "  mode for 'wildchar' command-line expansion
 
