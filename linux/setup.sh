@@ -139,7 +139,7 @@ function tmux_config() {
     echo 'configuring tmux ...'
 
     if [[ ! -f ~/.alias ]]; then
-        echo "failed. please init bash/zsh first."
+        echo "failed! please init bash/zsh first!"
         return 1
     fi
 
@@ -158,7 +158,7 @@ function proxy_config() {
     echo 'configuring proxy ...'
 
     if [[ ! -f ~/.alias ]]; then
-        echo "failed. please init bash/zsh first."
+        echo "failed! please init bash/zsh first!"
         return 1
     fi
 
