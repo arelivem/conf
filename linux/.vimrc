@@ -10,7 +10,7 @@ set mouse=a   " enable the use of mouse clicks
 "   - eol: line breaks
 "   - start: the start of insert
 "   - nostop: like start, do not stop at the start of insert
-set backspace=indent,start
+set backspace=indent,start,eol
 
 
 map e <Nop>

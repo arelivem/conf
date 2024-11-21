@@ -1,0 +1,24 @@
+alias sh='/bin/bash'
+alias ls='ls -F --color=auto'  # linux
+alias ll='ls -Alh'
+alias la='ls -A'
+alias l='ls -Clh'
+alias mv='/bin/mv -i'
+alias cp='/bin/cp -i'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias vi='vim'
+
+# rename rm
+function _rm_back() {
+    /bin/mv --backup=t $@ $HOME/.Trash/
+}
+alias rm=_rm_back
+
+# clean .Trash
+function clean_trash() {
+    echo -n 'clean .Trash? (Y/n): '
+    read confirm
+    [[ "${confirm}" == 'Y' ]] && /bin/rm -rf $HOME/.Trash/*
+}
