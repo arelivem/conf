@@ -13,10 +13,6 @@ white='\[\033[37m\]'
 defalut='\[\033[39m\]'
 
 
-# OS name
-OS=$(uname -s)
-
-
 # confirm color prompt
 case "$TERM" in
     xterm*|konsole*|rxvt*) color_prompt='yes';;
@@ -123,46 +119,6 @@ export PROMPT_COMMAND='history -a'
 set -o history
 
 
-# rename rm
-function _rm_back()
-{
-    /bin/mv --backup=t $@ $HOME/.Trash/
-}
-if [ "${OS}" == 'Linux' ]; then
-    alias rm=_rm_back
-elif [ "${OS}" == 'Darwin' ]; then
-    alias rm='trash -F'   # mac
-fi
-
-
-function _clean_trash()
-{
-    echo -n 'clean .Trash? (Y/n): '
-    read confirm
-    [ "${confirm}" == 'Y' ] && /bin/rm -rf $HOME/.Trash/*
-}
-alias clean-trash=_clean_trash
-
-
-# alias
-alias sh='/bin/bash'
-if [ "${OS}" == 'Linux' ]; then
-    alias ls='ls -F --color=auto'  # linux
-elif [ "${OS}" == 'Darwin' ]; then
-    alias ls='ls -FG'  # mac
-fi
-alias ll='ls -Alh'
-alias la='ls -A'
-alias l='ls -Clh'
-alias mv='/bin/mv -i'
-alias cp='/bin/cp -i'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-alias vi='vim'
-test -f $HOME/.alias && . $HOME/.alias
-
-
 # static link library
 [ -z "${BASE_LIBRARY_PATH}" ] && export BASE_LIBRARY_PATH="$LIBRARY_PATH"
 export LIBRARY_PATH="${BASE_LIBRARY_PATH}"
@@ -172,26 +128,10 @@ export LIBRARY_PATH="${BASE_LIBRARY_PATH}"
 export LD_LIBRARY_PATH="${BASE_LD_LIBRARY_PATH}"
 
 # env path
-[ -z "${BASE_PATH}" ] && export BASE_PATH="$HOME/.bin:$HOME/bin:$PATH"
+[ -z "${BASE_PATH}" ] && export BASE_PATH="$HOME/.bin::$PATH"
 export PATH="${BASE_PATH}"
 
 
-# tmux
-function _tmux_new()
-{
-    local tmux_cmd='command tmux' # command cancels all alias.
-    if [ $# -gt 0 ]; then
-        ${tmux_cmd} $@
-    else
-        ${tmux_cmd} attach
-        if [ $? -ne 0 ]; then
-            ${tmux_cmd} new-session
-        fi
-    fi
-}
-alias tmux=_tmux_new
-
-
-# proxy
-[ -f $HOME/.cmd_proxy ] && . $HOME/.cmd_proxy
+# alias
+test -f $HOME/.alias && . $HOME/.alias
 

@@ -13,10 +13,6 @@ white='%{%F{white}%}'
 default='%{%f%}'
 
 
-# OS name
-OS=$(uname -s)
-
-
 unsetopt beep
 bindkey -e
 
@@ -113,46 +109,6 @@ if (( $UID == 0 )) {
 }
 
 
-# rename rm
-function _rm_back()
-{
-    /bin/mv --backup=t $@ $HOME/.Trash/
-}
-if [[ "${OS}" == 'Linux' ]] {
-    alias rm=_rm_back
-} elif [[ "${OS}" == 'Darwin' ]] {
-    alias rm='trash -F'   # mac
-}
-
-
-function _clean_trash()
-{
-    echo -n 'clean .Trash? (Y/n): '
-    read confirm
-    [[ "${confirm}" == 'Y' ]] && /bin/rm -rf $HOME/.Trash/*
-}
-alias clean-trash=_clean_trash
-
-
-# alias
-alias sh='/bin/bash'
-if [[ "${OS}" == 'Linux' ]] {
-    alias ls='ls -F --color=auto'  # linux
-} elif [[ "${OS}" == 'Darwin' ]] {
-    alias ls='ls -FG'  # mac
-}
-alias ll='ls -Alh'
-alias la='ls -A'
-alias l='ls -Clh'
-alias mv='/bin/mv -i'
-alias cp='/bin/cp -i'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-alias vi='vim'
-test -f $HOME/.alias && . $HOME/.alias
-
-
 # static link library
 [[ -z "${BASE_LIBRARY_PATH}" ]] && export BASE_LIBRARY_PATH="$LIBRARY_PATH"
 export LIBRARY_PATH="${BASE_LIBRARY_PATH}"
@@ -162,25 +118,10 @@ export LIBRARY_PATH="${BASE_LIBRARY_PATH}"
 export LD_LIBRARY_PATH="${BASE_LD_LIBRARY_PATH}"
 
 # env path
-[[ -z "${BASE_PATH}" ]] && export BASE_PATH="$HOME/.bin:$HOME/bin:$PATH"
+[[ -z "${BASE_PATH}" ]] && export BASE_PATH="$HOME/.bin:$PATH"
 export PATH="${BASE_PATH}"
 
 
-# tmux
-function _tmux_new()
-{
-    local tmux_cmd='command tmux' # command cancels all alias.
-    if (( $# > 0 )) {
-        ${tmux_cmd} $@
-    } else {
-        ${tmux_cmd} attach
-        if (( $? != 0 )) {
-            ${tmux_cmd} new-session
-        }
-    }
-}
-alias tmux=_tmux_new
+# alias
+test -f $HOME/.alias && . $HOME/.alias
 
-
-# proxy
-[[ -f $HOME/.cmd_proxy ]] && . $HOME/.cmd_proxy

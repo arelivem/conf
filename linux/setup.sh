@@ -1,19 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 
-function check_command() {
-    local cmd=$1
-    if ! which ${cmd} &> /dev/null; then
-        echo "${cmd} is not found!"
-        exit 1
-    fi
-}
+OS=$(uname -s)
 
 
 function check_os() {
     echo 'checking OS ...'
 
-    OS=$(uname -s)
     if [[ "${OS}" != 'Linux' ]] && [[ "${OS}" != 'Darwin' ]]; then
         echo "OS: ${OS} not support."
         exit 1
@@ -21,47 +14,77 @@ function check_os() {
 }
 
 
+function check_command() {
+    local cmd=$1
+    if ! which ${cmd} &> /dev/null; then
+        echo "${cmd} is not found!"
+        return 1
+    fi
+    return 0
+}
+
+
+function alias_config() {
+    [[ -f ~/.alias ]] && mv ~/.alias ~/.alias.back
+    if [[ "${OS}" == 'Linux' ]]; then
+        cp -f ./.alias_linux ~/.alias
+    elif [[ "${OS}" == 'Darwin' ]]; then
+        cp -f ./.alias_mac ~/.alias
+    else
+        echo "OS: ${OS} not support."
+    fi
+}
+
+
+function directory_config() {
+    [[ ! -d ~/.Trash ]] && mkdir ~/.Trash
+    [[ ! -d ~/.bin ]] && mkdir ~/.bin
+}
+
+
 function bash_config() {
     echo 'configuring bash ...'
 
-    echo -n 'setup login shell [/bin/bash] (Y/n): '
+    local bash_path=$(which bash)
+    echo "bash path: ${bash_path}"
+
+    echo -n "setup login shell [${bash_path}] (Y/n): "
     read confirm
-    [[ "${confirm}" == 'Y' ]] && check_command /bin/bash && chsh -s /bin/bash
+    [[ "${confirm}" == 'Y' ]] && chsh -s ${bash_path}
 
     [[ -f ~/.bashrc ]] && mv ~/.bashrc ~/.bashrc.back
     cp -f ./.bashrc ~/
 
-    if [[ "${OS}" == 'Darwin' ]]; then
-        [[ -f ~/.bash_profile ]] && mv ~/.bash_profile ~/.bash_profile.back
-        cp -f ./.bash_profile ~/
-    fi
+    [[ -f ~/.bash_profile ]] && mv ~/.bash_profile ~/.bash_profile.back
+    cp -f ./.bash_profile ~/
 
     # config inputrc (hot keys)
     [[ -f ~/.inputrc ]] && mv ~/.inputrc ~/.inputrc.back
     cp -f ./.inputrc ~/
 
-    [[ ! -d ~/.Trash ]] && mkdir ~/.Trash
-    [[ ! -d ~/.bin ]] && mkdir ~/.bin
+    alias_config
+    directory_config
 }
 
 
 function zsh_config() {
     echo 'configuring zsh ...'
 
-    echo -n 'setup login shell [/bin/zsh] (Y/n): '
+    local zsh_path=$(which zsh)
+    echo "zsh path: ${zsh_path}"
+
+    echo -n "setup login shell [${zsh_path}] (Y/n): "
     read confirm
-    [[ "${confirm}" == 'Y' ]] && check_command /bin/zsh && chsh -s /bin/zsh
+    [[ "${confirm}" == 'Y' ]]  && chsh -s ${zsh_path}
 
     [[ -f ~/.zshrc ]] && mv ~/.zshrc ~/.zshrc.back
     cp -f ./.zshrc ~/
 
-    if [[ "${OS}" == 'Darwin' ]]; then
-        [[ -f ~/.zprofile ]] && mv ~/.zprofile ~/.zprofile.back
-        cp -f ./.zprofile ~/
-    fi
+    [[ -f ~/.zprofile ]] && mv ~/.zprofile ~/.zprofile.back
+    cp -f ./.zprofile ~/
 
-    [[ ! -d ~/.Trash ]] && mkdir ~/.Trash
-    [[ ! -d ~/.bin ]] && mkdir ~/.bin
+    alias_config
+    directory_config
 }
 
 
@@ -71,9 +94,9 @@ function vim_config() {
     [[ -f ~/.vimrc ]] && mv ~/.vimrc ~/.vimrc.back
     cp -f ./.vimrc ~/
 
-    echo -n 'add syntax highlighting (Y/n): '
-    read confirm
-    [[ "${confirm}" == 'Y' ]] && vim_syntax
+    # echo -n 'add vim syntax highlighting (Y/n): '
+    # read confirm
+    # [[ "${confirm}" == 'Y' ]] && vim_syntax
 }
 
 
@@ -85,13 +108,13 @@ function vim_syntax() {
     check_command git
     git clone https://github.com/vim/vim.git
 
-    cp ./vim/runtime/filetype.vim ~/.vim/
+    cp -f ./vim/runtime/filetype.vim ~/.vim/
 
     [[ ! -d ~/.vim/ftplugin ]] && mkdir ~/.vim/ftplugin
-    cp ./vim/runtime/ftplugin/*.vim ~/.vim/ftplugin/
+    cp -f ./vim/runtime/ftplugin/*.vim ~/.vim/ftplugin/
 
     [[ ! -d ~/.vim/syntax ]] && mkdir ~/.vim/syntax
-    cp ./vim/runtime/syntax/*.vim ~/.vim/syntax/
+    cp -f ./vim/runtime/syntax/*.vim ~/.vim/syntax/
 
     /bin/rm -rf ./vim
 }
@@ -99,8 +122,6 @@ function vim_syntax() {
 
 function git_config() {
     echo 'configuring git ...'
-
-    check_command git
 
     local GIT_STORE='store'
     if [[ "${OS}" == 'Darwin' ]]; then
@@ -117,16 +138,31 @@ function git_config() {
 function tmux_config() {
     echo 'configuring tmux ...'
 
+    if [[ ! -f ~/.alias ]]; then
+        echo "failed! please init bash/zsh first!"
+        return 1
+    fi
+
+    local tmux_path=$(which tmux)
+    echo "tmux path: ${tmux_path}"
+
+    bash alias_tmux.sh
+
     [[ -f ~/.tmux.conf ]] && mv ~/.tmux.conf ~/.tmux.conf.back
     cp -f ./.tmux.conf ~/
+
 }
 
 
 function proxy_config() {
     echo 'configuring proxy ...'
 
-    [[ -f ~/.cmd_proxy ]] && mv ~/.cmd_proxy ~/.cmd_proxy.back
-    cp -f ./.cmd_proxy ~/
+    if [[ ! -f ~/.alias ]]; then
+        echo "failed! please init bash/zsh first!"
+        return 1
+    fi
+
+    cat proxy_cmd.sh >> ~/.alias
 }
 
 
@@ -157,19 +193,32 @@ function main() {
             response=(${response})
             for index in "${response[@]}"; do
                 case "${index}" in
-                    1) bash_config
+                    1) 
+                        echo '----------------------------------------'
+                        check_command bash && bash_config
                         ;;
-                    2) zsh_config
+                    2) 
+                        echo '----------------------------------------'
+                        check_command zsh && zsh_config
                         ;;
-                    3) vim_config
+                    3) 
+                        echo '----------------------------------------'
+                        check_command vim && vim_config
                         ;;
-                    4) git_config
+                    4) 
+                        echo '----------------------------------------'
+                        check_command git && git_config
                         ;;
-                    5) tmux_config
+                    5) 
+                        echo '----------------------------------------'
+                        check_command tmux && tmux_config
                         ;;
-                    6) proxy_config
+                    6) 
+                        echo '----------------------------------------'
+                        proxy_config
                         ;;
-                    *) echo "${index} is invalid value."
+                    *) 
+                        echo "${index} is invalid value."
                         ;;
                 esac
             done

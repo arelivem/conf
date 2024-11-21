@@ -5,6 +5,13 @@ set noerrorbells   " disable the error bells
 set encoding=utf-8   " encoding used internally
 set mouse=a   " enable the use of mouse clicks
 
+" allow backspace over something
+"   - indent: autoindent
+"   - eol: line breaks
+"   - start: the start of insert
+"   - nostop: like start, do not stop at the start of insert
+set backspace=indent,start,eol
+
 
 map e <Nop>
 let mapleader="e"

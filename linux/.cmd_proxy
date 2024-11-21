@@ -1,8 +1,0 @@
-# proxy
-proxy_port="7890"
-host_ip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
-
-export https_proxy="http://${host_ip}:${proxy_port}"
-export http_proxy="http://${host_ip}:${proxy_port}"
-export all_proxy="socks5://${host_ip}:${proxy_port}"
-
